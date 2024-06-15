@@ -1,3 +1,62 @@
+# Task 7 - Blog
+
+Create a simple application to display blog posts. The front page will display a summary of the last 20 posts, the most recent will be on
+at the top. It will display the headline, perex, date published and author. There will be a link next to the post, e.g. "Read more", which will 
+lead to a detail page with in addition to the above information, the full post. The URL of the post will be of the form `/post/{slug}`, 
+where `slug` is the value from the corresponding column in the database. The detail page will link back to the front page.
+
+The database contains a single table named `post`. See `src/resources/db/migration/V1__init.sql` for how to create the table.
+
+* `id` - the numeric identifier of the entry, the primary key - in Java use the `Long` type for it; it won't be of any use to the application 
+at the moment, but the database has every decent well-behaved record has its unique identifier
+* `slug` - the part of the URL after `/post/` that identifies the post (the so-called "pretty URL")
+* `author` - the name of the author
+* `title` - the title of the post
+* `perex` - the HTML code of the first paragraph of the post, which is displayed on the home page
+* `body` - the continuation of the post after the perex, HTML code
+* `published` - the date of publication, if it is `NULL` or in the future, the post is not yet displayed on the front page (check how the database behaves,
+  when the record is `NULL` and the condition says the date must be less than some value)
+
+The data table is empty after the first run of the application, to test it you will need to insert some posts into the table using the tools in IntelliJ Idea.
+The connection URL, which is entered when configuring the Database panel in IntelliJ Idea, can be found in the `src/main/resources/application.yaml` file.
+
+1. Use this repository as a template from which to create a repository in your GitHub account.
+1. Clone the repository **from your GitHub account** to your local machine.
+1. Run your cloned application to spawn the database. Meanwhile, the browser will display the page [http://localhost:8080/](http://localhost:8080/)
+   only an error, there is no controller in the application.
+1. Run the Database panel in IntelliJ Idea so you can check what's in the database (there's just an empty table, no entries 😉 ). The connection URL that is
+   is entered when configuring the *Database* panel in IntelliJ Idea, can be found in the `src/main/resources/application.yaml` file. The easiest way is to use *DataSource from
+   URL*.
+1. When the application starts, the database is empty, the startup script does not fill in any data. Use the *Database* panel in IntelliJ Idea to connect to the database and add
+   several posts to a future blog. You can use HTML code in the perex and body (`body`) - be sure to use at least the `<p>...</p>` paragraphs.
+   Create the `Post` entity and create the fields and properties corresponding to the database table. Don't forget the `@Entity`, `@Id` and `@GeneratedValue` annotations.
+1. Create a `JpaRepository` for the `Post` entity (name it `PostRepository`).
+1. Create a `PostService` that will use `@Autowired` to retrieve `PostRepository`.
+1. In the `PostService`, create a method `list()` that will return a list of all posts (no paging or sorting yet). Next, create a method there
+   method `singlePost(String slug)`, which will find one post according to the specified `slug` and return it.
+1. Create a controller and two methods in it, to display the home page with a list of posts and to display one complete post. The controller will use
+   the  service
+   `PostService`, which is obtained using `@Autowired`. You don't have to deal with the case where the user makes up a post URL that doesn't exist.
+1. Create templates for both controller methods. Appearance doesn't matter :-) To insert the HTML code from the model into the template, you need to use the Freemarker entry instead
+   `${value?no_esc}` to ensure that Freemarker does not convert the `<` and `>` characters, but inserts them unaltered into the resulting file. See the documentation for details
+   [no_esc](https://freemarker.apache.org/docs/ref_builtins_string.html#ref_builtin_no_esc) of Freemarker.
+1. Edit the `list()` method in `PostService` to use `Pageable` and limit the result to 20 records. To create a proper `Pageable`, use a static
+   method `PageRequest.of(0, 20)`. Create a method in the repository that will return Page<Post>, use `Pageable` to limit the number of records, retrieve only
+   posts,
+   that have a publication date and are not in the future, and sorts the entries in descending order by publication date. The `sort` entry of `Pageable` will not be used for sorting (
+   this is used when the user should be able to change the sorting method - but we want to always sort entries from newest to oldest). Instead
+   the correct method name in the repository will be used (so the text `OrderBy` will be part of the method name).
+1. *Bonus*: You can modify the template for listing the entries so that you can page through them. However, the page numbering will not be used, instead it will be at the bottom
+   on the page, just the "previous" and "next" links. Use the `hasPrevious()` and `hasNext()` methods on the `Page` interface to do this.
+1. Check that everything works.
+1. *Commit* and *push* the changes (the resulting code) to your GitHub repository.
+1. Paste the link to your repository into a task on https://moje.czechitas.cz.
+1. *Super bonus*: You can also add an administration page to the app, which will allow you to add, edit, and delete commits.
+
+
+
+
+
 # Úkol 7 – Blog
 
 Vytvoříme jednoduchou aplikaci pro zobrazování blogových zápisků. Na titulní stránce se bude zobrazovat přehled dvaceti posledních zápisků, nejnovější bude na
