@@ -13,7 +13,7 @@ public class PostController {
     private final PostService service;
 @Autowired
     public PostController(PostService service){
-        this.service = service;
+    this.service = service;
     }
 
     @GetMapping("/")
