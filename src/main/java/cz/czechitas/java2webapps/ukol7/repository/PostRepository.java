@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p WHERE p.slug = ?1")
-    Page<Post> findPostBySlug(String slug, Pageable pageable);
+    Post findPostBySlug(String slug);
 
     @Query("SELECT p FROM Post p WHERE p.published <=current date ORDER BY p.published DESC ")
     Page<Post> findPostBeforeDay(@Param("currentDay") LocalDate currentDay, Pageable pageable);

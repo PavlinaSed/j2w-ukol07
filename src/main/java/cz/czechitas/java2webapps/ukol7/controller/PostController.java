@@ -17,14 +17,14 @@ public class PostController {
     }
 
     @GetMapping("/")
-    public ModelAndView index(){
+    public ModelAndView index(Pageable pageable){
     return new ModelAndView("index")
-            .addObject("posts", service.list());
+            .addObject("posts", service.list(pageable));
     }
 
     @GetMapping("/post/{slug}")
-    public Object post(@PathVariable String slug, Pageable pageable){
+    public Object post(@PathVariable String slug){
     return new ModelAndView("post")
-            .addObject("post", service.singlePost(slug, pageable));
+            .addObject("post", service.singlePost(slug));
     }
 }

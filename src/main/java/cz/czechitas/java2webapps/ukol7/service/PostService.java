@@ -22,13 +22,13 @@ public class PostService {
     /**
      * Return a list of all articles posted on the blog
      */
-public Page<Post> list(){
-    Pageable pageable = PageRequest.of(0, 20);
-    LocalDate currentDay = LocalDate.now();
+public Page<Post> list(Pageable pageable){
+    pageable = PageRequest.of(0, 20);
+    LocalDate currentDay = LocalDate.now().plusDays(1);
     return postRepository.findPostBeforeDay(currentDay, pageable);
 }
 
-public Page<Post> singlePost(String slug, Pageable pageable){
-    return postRepository.findPostBySlug(slug, pageable);
+public Post singlePost(String slug){
+    return (Post) postRepository.findPostBySlug(slug);
 }
 }

@@ -19,6 +19,8 @@ public class Post {
     private String body;
     private LocalDate published;
 
+    public Post() {
+    }
 
     public Long getId() {
         return id;
