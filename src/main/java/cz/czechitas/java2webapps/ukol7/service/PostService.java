@@ -22,8 +22,8 @@ public class PostService {
     /**
      * Return a list of all articles posted on the blog
      */
-public Page<Post> list(Pageable pageable){
-    pageable = PageRequest.of(0, 20);
+Pageable pageable = PageRequest.of(0,20);
+    public Page<Post> list(Pageable pageable){
     LocalDate currentDay = LocalDate.now().plusDays(1);
     return postRepository.findPostBeforeDay(currentDay, pageable);
 }

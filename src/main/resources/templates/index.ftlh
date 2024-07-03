@@ -3,7 +3,7 @@
 
 [#import '_imports/_common.ftlh' as c]
 
-[@c.post title="Programming blog"]
+[@c.page title="Programming blog"]
     <h1>Here you can find all you´ve ever wish to know about programming</h1>
     <table class="table">
         <thead>
@@ -20,6 +20,7 @@
             <tr>
                 <td>${post.title}</td>
                 <td>${post.perex?no_esc}</td>
+                <td>${post.author}</td>
                 <td>${post.published?date?string}</td>
                 <td>
                     <a href="/post/${post.slug}">Read more</a>
@@ -28,5 +29,6 @@
         [/#list]
         </tbody>
     </table>
+[@c.pager /]
 
-[/@c.post]
+[/@c.page]
